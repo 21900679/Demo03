@@ -9,6 +9,7 @@ public class homepage extends JFrame implements ActionListener {
     JTextField field1;
     JPasswordField field2;
     String getid, getpw;
+    Font font;
 
     public homepage(){
         setTitle("jimin_login");
@@ -18,9 +19,12 @@ public class homepage extends JFrame implements ActionListener {
         getContentPane().setBackground(Color.white);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        font = new Font("SanSerif", Font.BOLD, 30);
+
         logpanel.setBackground(Color.white);
         logpanel.setLayout(null);        // setBounds를 하기 위해서 해야함.
 
+        JLabel jimin = new JLabel("JIMINNet");
         JButton client = new JButton("회원가입");
         JButton login = new JButton("로그인");
         JLabel id = new JLabel("ID: ");
@@ -28,13 +32,15 @@ public class homepage extends JFrame implements ActionListener {
         field1 = new JTextField(15);
         field2 = new JPasswordField(15);
 
+        jimin.setBounds(74,30,150, 50);
         client.setBounds(30, 250, 100, 30);
         login.setBounds(150, 250, 100, 30);
-        id.setBounds(50, 70, 50, 30);
-        password.setBounds(50, 100, 70, 30);
-        field1.setBounds(115, 70, 110, 30);
-        field2.setBounds(115, 100, 110, 30);
+        id.setBounds(50, 110, 50, 30);
+        password.setBounds(50, 160, 70, 30);
+        field1.setBounds(115, 110, 110, 30);
+        field2.setBounds(115, 160, 110, 30);
 
+        logpanel.add(jimin);
         logpanel.add(id);
         logpanel.add(field1);
         logpanel.add(password);
@@ -45,6 +51,8 @@ public class homepage extends JFrame implements ActionListener {
         client.addActionListener(this);
         login.addActionListener(this);
 
+        jimin.setFont(font);
+        jimin.setForeground(Color.pink);
         client.setBackground(Color.pink);
         login.setBackground(Color.pink);
 

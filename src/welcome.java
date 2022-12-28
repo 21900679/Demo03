@@ -12,11 +12,14 @@ public class welcome extends JFrame implements ActionListener {
     LoginDAO dao = new LoginDAO();
     LoginVo vo = new LoginVo();
     boolean ys = false;
+    Font font;
 
     public welcome(){
         setTitle("welcome site");
-        setSize(400, 450);
+        setSize(350, 400);
         setLocationRelativeTo(null);
+
+        font = new Font("SanSerif", Font.BOLD, 15);
 
         getContentPane().setBackground(Color.white);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -38,22 +41,24 @@ public class welcome extends JFrame implements ActionListener {
         M = new JRadioButton("남자");
         JButton submit = new JButton("등록하기");
         JButton check = new JButton("중복체크");
+        JButton back = new JButton("<-");
 
         ButtonGroup Gender = new ButtonGroup();
         Gender.add(F);
         Gender.add(M);
 
-        name.setBounds(20, 70, 70, 30);
-        text_name.setBounds(60, 70, 90, 30);
-        id.setBounds(20, 100,70,30);
-        text_id.setBounds(60, 100, 90, 30);
-        pass.setBounds(20, 130, 70, 30);
-        text_pw.setBounds(90, 130, 90, 30);
-        fm.setBounds(20, 160, 60, 30);
-        F.setBounds(60,160, 60, 30);
-        M.setBounds(120, 160, 60, 30);
-        submit.setBounds(150, 350,100, 30);
-        check.setBounds(160,100, 90, 20);
+        name.setBounds(65, 60, 100, 30);
+        text_name.setBounds(120, 60, 150, 30);
+        id.setBounds(65, 110,50,30);
+        text_id.setBounds(100, 110, 110, 30);
+        pass.setBounds(65, 160, 110, 30);
+        text_pw.setBounds(155, 160, 115, 30);
+        fm.setBounds(65, 210, 50, 30);
+        F.setBounds(155,210, 60, 30);
+        M.setBounds(215, 210, 60, 30);
+        submit.setBounds(125, 290,100, 30);
+        check.setBounds(215,110, 90, 30);
+        back.setBounds(5, 5, 50, 20);
 
         welpanel.add(name);
         welpanel.add(id);
@@ -66,11 +71,27 @@ public class welcome extends JFrame implements ActionListener {
         welpanel.add(fm);
         welpanel.add(submit);
         welpanel.add(check);
+        welpanel.add(back);
+
+        name.setFont(font);
+        id.setFont(font);
+        pass.setFont(font);
+        submit.setFont(font);
+        fm.setFont(font);
+        F.setFont(font);
+        M.setFont(font);
+
+        F.setBackground(Color.white);
+        M.setBackground(Color.white);
+        submit.setBackground(Color.pink);
+        check.setBackground(Color.pink);
+        back.setBackground(Color.pink);
 
         submit.addActionListener(this);
         F.addActionListener(this);
         M.addActionListener(this);
         check.addActionListener(this);
+        back.addActionListener(this);
 
         add(welpanel);
         setVisible(false);
@@ -89,6 +110,7 @@ public class welcome extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "사용가능한 id입니다.");
             }
             else{
+                ys = false;
                 JOptionPane.showMessageDialog(null, "이미 사용중인 id입니다.");
             }
         }
@@ -129,9 +151,13 @@ public class welcome extends JFrame implements ActionListener {
             }
 
         }
+        if(e.getActionCommand().equals("<-")){
+            setVisible(false);
+            homepage home = new homepage();
+        }
     }
 
-    public static void main(String[] args){
-        new welcome();
-    }
+//    public static void main(String[] args){
+//        new welcome();
+//    }
 }

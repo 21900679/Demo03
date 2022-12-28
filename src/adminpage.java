@@ -4,15 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class adminpage extends JFrame implements ActionListener {
-    JTextField chaname, chapw;
+    JTextField chaname;
     JRadioButton F, M;
+    JPasswordField chapw;
     JPanel chapanel = new JPanel();
     String getname, getgender, getpw, getid;
+    Font font;
     LoginDAO dao = new LoginDAO();
     adminpage(String name1, String id1, String pw1, String gender1){
         setTitle("change");
-        setSize(400, 450);
+        setSize(350, 400);
         setLocationRelativeTo(null);
+
+        font = new Font("SanSerif", Font.BOLD, 15);
 
         getContentPane().setBackground(Color.white);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -20,9 +24,10 @@ public class adminpage extends JFrame implements ActionListener {
         chapanel.setLayout(null);
         chapanel.setBackground(Color.white);
 
-        System.out.println("Aaa");
-        System.out.println(id1);
         getid = id1;
+        getname = name1;
+        getpw = pw1;
+        getgender = gender1;
 
         JLabel name = new JLabel("이름: ");
         JLabel id = new JLabel("ID: ");
@@ -30,12 +35,10 @@ public class adminpage extends JFrame implements ActionListener {
         JLabel gender = new JLabel("성별");
         JLabel getid = new JLabel(id1);
         chaname = new JTextField();
-        chapw = new JTextField();
+        chapw = new JPasswordField();
 
         chaname.setText(name1);
         chapw.setText(pw1);
-
-        System.out.println(gender1);
 
         if(gender1.equals("F")){
             System.out.println("여자입니다.");
@@ -50,22 +53,24 @@ public class adminpage extends JFrame implements ActionListener {
 
         JButton submit = new JButton("수정하기");
         JButton out = new JButton("탈퇴");
+        JButton back = new JButton("<-");
 
         ButtonGroup Gender = new ButtonGroup();
         Gender.add(F);
         Gender.add(M);
 
-        name.setBounds(50, 70, 50, 30);
-        chaname.setBounds(110,70, 110, 30);
-        id.setBounds(50, 100, 50, 30);
-        getid.setBounds(110, 100, 50, 30);
-        pw.setBounds(50, 130, 110, 30);
-        chapw.setBounds(110,130,110,30);
-        gender.setBounds(50, 160, 50, 30);
-        F.setBounds(90, 160, 60, 30);
-        M.setBounds(150, 160,60,30);
-        submit.setBounds(150, 350, 100, 30);
-        out.setBounds(250, 350, 100, 30);
+        name.setBounds(65, 60, 100, 30);
+        chaname.setBounds(155,60, 110, 30);
+        id.setBounds(65, 110, 50, 30);
+        getid.setBounds(155, 110, 50, 30);
+        pw.setBounds(65, 160, 110, 30);
+        chapw.setBounds(155,160,110,30);
+        gender.setBounds(65, 210, 50, 30);
+        F.setBounds(155, 210, 60, 30);
+        M.setBounds(215, 210,60,30);
+        submit.setBounds(70, 290, 100, 30);
+        out.setBounds(180, 290, 100, 30);
+        back.setBounds(5,5,50,20);
 
         chapanel.add(name);
         chapanel.add(id);
@@ -78,11 +83,29 @@ public class adminpage extends JFrame implements ActionListener {
         chapanel.add(chapw);
         chapanel.add(getid);
         chapanel.add(out);
+        chapanel.add(back);
+
+        name.setFont(font);
+        id.setFont(font);
+        pw.setFont(font);
+        gender.setFont(font);
+        getid.setFont(font);
+        submit.setFont(font);
+        F.setFont(font);
+        M.setFont(font);
+        out.setFont(font);
+
+        F.setBackground(Color.white);
+        M.setBackground(Color.white);
+        submit.setBackground(Color.pink);
+        back.setBackground(Color.pink);
+        out.setBackground(Color.pink);
 
         submit.addActionListener(this);
         out.addActionListener(this);
         F.addActionListener(this);
         M.addActionListener(this);
+        back.addActionListener(this);
 
         add(chapanel);
         setVisible(true);
@@ -90,22 +113,31 @@ public class adminpage extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        getname = chaname.getText();
-        getpw = chapw.getText();
-        if(F.isSelected())
-            getgender = "F";
-        else
-            getgender = "M";
 
         if(e.getActionCommand().equals("수정하기")){
-            int success = dao.updateLogin(getname, getid, getpw, getgender);
-            if(success == 0)
-                System.out.println("실패");
+            getname = chaname.getText();
+            getpw = chapw.getText();
+            if(F.isSelected())
+                getgender = "F";
+            else
+                getgender = "M";
+
+            if(getname.length() < 1){
+                JOptionPane.showMessageDialog(null, "이름을 입력하시오.");
+            }
+            else if(getpw.length() < 8){
+                JOptionPane.showMessageDialog(null, "Password 8글자 이상 입력하시오.");
+            }
             else{
-                System.out.println("성공");
-                JOptionPane.showMessageDialog(null, "수정 완료.");
-                setVisible(false);
-                new admin();
+                int success = dao.updateLogin(getname, getid, getpw, getgender);
+                if(success == 0)
+                    System.out.println("실패");
+                else{
+                    System.out.println("성공");
+                    JOptionPane.showMessageDialog(null, "수정 완료.");
+                    setVisible(false);
+                    new admin();
+                }
             }
         }
         if(e.getActionCommand().equals("탈퇴")){
@@ -117,9 +149,12 @@ public class adminpage extends JFrame implements ActionListener {
                 new admin();
             }
         }
+        if(e.getActionCommand().equals("<-")){
+            setVisible(false);
+            new admin();
+        }
     }
-
-    public static void main(String[] args){
-        new adminpage("정지민", "ㅇㅇ", "ㅇㅇㅇㅇ", "12345");
-    }
+//    public static void main(String[] args){
+//        new adminpage("정지민", "ㅇㅇ", "ㅇㅇㅇㅇ", "12345");
+//    }
 }

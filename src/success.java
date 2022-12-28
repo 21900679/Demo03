@@ -6,14 +6,17 @@ public class success extends JFrame implements ActionListener{
     JButton change, remove, logout;
     JPanel logpanel = new JPanel();
     String getname, getid, getpw, getgender;
+    Font font;
     LoginDAO dao = new LoginDAO();
     public success(String id1, String pw1){
         setTitle("login success");
-        setSize(400, 450);
+        setSize(350, 400);
         setLocationRelativeTo(null);
 
         getContentPane().setBackground(Color.white);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        font = new Font("SanSerif", Font.BOLD, 15);
 
         getid = id1;
         getpw = pw1;
@@ -26,13 +29,21 @@ public class success extends JFrame implements ActionListener{
         remove = new JButton("탈퇴");
         logout = new JButton("로그아웃");
 
-        change.setBounds(100, 50, 200, 50);
-        remove.setBounds(100, 150, 200, 50);
-        logout.setBounds(100, 250, 200, 50);
+        change.setBounds(75, 50, 200, 50);
+        remove.setBounds(75, 150, 200, 50);
+        logout.setBounds(75, 250, 200, 50);
 
         logpanel.add(change);
         logpanel.add(remove);
         logpanel.add(logout);
+
+        change.setFont(font);
+        remove.setFont(font);
+        logout.setFont(font);
+
+        change.setBackground(Color.pink);
+        remove.setBackground(Color.pink);
+        logout.setBackground(Color.pink);
 
         change.addActionListener(this);
         remove.addActionListener(this);
@@ -64,6 +75,6 @@ public class success extends JFrame implements ActionListener{
     }
 
 //    public static void main(String[] args){
-//        new success();
+//        new success("aaa","bbb");
 //    }
 }
