@@ -93,7 +93,7 @@ public class change extends JFrame implements ActionListener {
                 System.out.println("성공");
                 JOptionPane.showMessageDialog(null, "수정 완료.");
                 setVisible(false);
-                //success suc = new success();
+                success suc = new success(getid, getpw);
             }
         }
 

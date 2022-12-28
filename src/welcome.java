@@ -8,8 +8,10 @@ public class welcome extends JFrame implements ActionListener {
     String getname, getid, getpw, getgender;
     JTextField text_name, text_id;
     JPasswordField text_pw;
+    JRadioButton F, M;
     LoginDAO dao = new LoginDAO();
     LoginVo vo = new LoginVo();
+    boolean ys = false;
 
     public welcome(){
         setTitle("welcome site");
@@ -32,9 +34,10 @@ public class welcome extends JFrame implements ActionListener {
         text_name = new JTextField();
         text_id = new JTextField();
         text_pw = new JPasswordField();
-        JRadioButton F = new JRadioButton("여자");
-        JRadioButton M = new JRadioButton("남자");
+        F = new JRadioButton("여자");
+        M = new JRadioButton("남자");
         JButton submit = new JButton("등록하기");
+        JButton check = new JButton("중복체크");
 
         ButtonGroup Gender = new ButtonGroup();
         Gender.add(F);
@@ -50,6 +53,7 @@ public class welcome extends JFrame implements ActionListener {
         F.setBounds(60,160, 60, 30);
         M.setBounds(120, 160, 60, 30);
         submit.setBounds(150, 350,100, 30);
+        check.setBounds(160,100, 90, 20);
 
         welpanel.add(name);
         welpanel.add(id);
@@ -61,10 +65,12 @@ public class welcome extends JFrame implements ActionListener {
         welpanel.add(M);
         welpanel.add(fm);
         welpanel.add(submit);
+        welpanel.add(check);
 
         submit.addActionListener(this);
         F.addActionListener(this);
         M.addActionListener(this);
+        check.addActionListener(this);
 
         add(welpanel);
         setVisible(false);
@@ -72,33 +78,56 @@ public class welcome extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
 
-        if(e.getActionCommand().equals("등록하기")){
-            getname = text_name.getText();
-            getid = text_id.getText();
-            getpw = text_pw.getText();
-            if(e.getSource() == "F")
-                getgender = "F";
-            else
-                getgender = "M";
-            System.out.println(getname);
-            System.out.println(getid);
-            System.out.println(getpw);
-            System.out.println(getgender);
-            int success = dao.insertLogin(getname, getid, getpw, getgender);
-            if(success == 0)
-                System.out.println("실패");
-            else{
-                System.out.println("성공");
-                JOptionPane.showMessageDialog(null, "로그인 완료.");
-                setVisible(false);
-                homepage home = new homepage();
-                //setVisible(false);
-                //new homepage();
-                //home.setVisible(true);
+        getname = text_name.getText();
+        getid = text_id.getText();
+        getpw = text_pw.getText();
+
+        if(e.getActionCommand().equals("중복체크")){
+            int success = dao.yslogin(getid, getpw);
+            if(success == -1){
+                ys = true;
+                JOptionPane.showMessageDialog(null, "사용가능한 id입니다.");
             }
-//            setVisible(false);
-//            new homepage();
-//            setVisible(true);
+            else{
+                JOptionPane.showMessageDialog(null, "이미 사용중인 id입니다.");
+            }
+        }
+
+        if(e.getActionCommand().equals("등록하기")){
+            if(F.isSelected())
+                getgender = "F";
+            else if(M.isSelected())
+                getgender = "M";
+            else
+                getgender = "N";
+            if(ys == false){
+                JOptionPane.showMessageDialog(null, "중복체크 하시오.");
+            }
+            else if(getname.length() < 1){
+                JOptionPane.showMessageDialog(null, "이름을 입력하시오.");
+            }
+            else if(getid.length() < 4){
+                JOptionPane.showMessageDialog(null, "id 4글자 이상 입력하시오.");
+                new welcome();
+            }
+            else if(getpw.length() < 8){
+                JOptionPane.showMessageDialog(null, "Password 8글자 이상 입력하시오.");
+            }
+            else if(getgender == "N"){
+                JOptionPane.showMessageDialog(null, "성별을 선택 하시오.");
+            }
+            else{
+                int success = dao.insertLogin(getname, getid, getpw, getgender);
+                if(success == 0)
+                    System.out.println("실패");
+                else{
+                    System.out.println("성공");
+                    JOptionPane.showMessageDialog(null, "등록 완료.");
+                    setVisible(false);
+                    homepage home = new homepage();
+                }
+            }
+
         }
     }
 

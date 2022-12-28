@@ -47,12 +47,10 @@ public class success extends JFrame implements ActionListener{
             int result = JOptionPane.showConfirmDialog(null, "탈퇴하시겠습니까?", "탈퇴", JOptionPane.YES_NO_OPTION);
             if(result == JOptionPane.YES_OPTION){      //사용자가 예를 선택한 경우
                 JOptionPane.showMessageDialog(null, "탈퇴되었습니다.");
-                homepage page = new homepage();
-                getid = page.getid;
-                getpw = page.getpw;
-                //System.out.println(getid);
+                System.out.println(getid);
                 dao.deleteLogin(getid);
                 setVisible(false);
+                new homepage();
             }
         }
         if(e.getActionCommand().equals("로그아웃")){

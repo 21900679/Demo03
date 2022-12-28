@@ -6,11 +6,8 @@ import java.sql.*;
 
 public class homepage extends JFrame implements ActionListener {
     JPanel logpanel = new JPanel();
-    JTextField field1, field2;
-
-//    private JTextField text_name;
-//    private JTextField text_id;
-//    private JTextField text_pass;
+    JTextField field1;
+    JPasswordField field2;
     String getid, getpw;
 
     public homepage(){
@@ -29,7 +26,7 @@ public class homepage extends JFrame implements ActionListener {
         JLabel id = new JLabel("ID: ");
         JLabel password = new JLabel("Password: ");
         field1 = new JTextField(15);
-        field2 = new JTextField(15);
+        field2 = new JPasswordField(15);
 
         client.setBounds(30, 250, 100, 30);
         login.setBounds(150, 250, 100, 30);
