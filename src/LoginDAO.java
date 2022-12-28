@@ -96,18 +96,29 @@ public class LoginDAO {
     public int yslogin(String id1, String pw1){
         Connection conn = null;
         PreparedStatement pstmt = null;
+        PreparedStatement padmin = null;
         ResultSet rs;
+        ResultSet prs;
 
         try{
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root","Mouth612612*");
 
             String sql = "select Password from client where ID = ?";
+            String admin = "select Gender from client where ID = ?";
             pstmt = conn.prepareStatement(sql);
+            padmin = conn.prepareStatement(admin);
             pstmt.setString(1, id1);
+            padmin.setString(1, id1);
             rs = pstmt.executeQuery();
-            if(rs.next()){
-                if(rs.getString(1).equals(pw1))
-                    return 1;   //로그인 성공
+            prs = padmin.executeQuery();
+            if(rs.next() && prs.next()){
+                if(rs.getString(1).equals(pw1)){
+                    if(prs.getString(1).equals("X"))
+                        return -3;  //관리자
+                    else
+                        return 1;   //로그인 성공
+                }
+
                 else
                     return 0;   //비밀번호 불일치
             }

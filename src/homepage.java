@@ -66,7 +66,11 @@ public class homepage extends JFrame implements ActionListener {
 
             int success = dao.yslogin(getid, getpw);
 
-            if(success == 1){
+            if(success == -3){
+                setVisible(false);
+                new admin();
+            }
+            else if(success == 1){
                 JOptionPane.showMessageDialog(null, "로그인 성공.");
                 setVisible(false);
                 new success(getid, getpw);

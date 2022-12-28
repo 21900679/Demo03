@@ -40,7 +40,6 @@ public class admin extends JFrame implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         int row = table.getSelectedRow();
-        int col = table.getSelectedColumn();
 
         getname = contents[row][0];
         getid = contents[row][1];
