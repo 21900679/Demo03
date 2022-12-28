@@ -1,24 +1,32 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class admin extends JFrame implements MouseListener {
+public class admin extends JFrame implements MouseListener, ActionListener {
     LoginDAO dao = new LoginDAO();
     JTable table;
     List<LoginVo> clients = new ArrayList<LoginVo>();
     String getname, getgender, getpw, getid;
     String[][] contents;
+    JPanel list = new JPanel();
+    JPanel botton = new JPanel();
+    Font font;
     admin(){
         setTitle("admin list");
         setSize(400, 450);
         setLocationRelativeTo(null);
-
-        getContentPane().setBackground(Color.white);
+        list.setLayout(null);
+        botton.setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        font = new Font("SanSerif", Font.BOLD, 15);
+
+        JButton back = new JButton("로그아웃");
         String header[] = {"Name", "ID", "Password", "Gender"};
         clients = dao.getLoginList();
         contents = new String[clients.size()][4];
@@ -29,12 +37,31 @@ public class admin extends JFrame implements MouseListener {
             contents[i][3] = clients.get(i).getGender();
         }
         table = new JTable(contents, header);
+        table.getTableHeader().setReorderingAllowed(false);     //이동 불가
+        table.getTableHeader().setResizingAllowed(false);   //크기 조절 불가
         JScrollPane scrollPane = new JScrollPane(table);
 
-        add(scrollPane);
-        setVisible(true);
+        scrollPane.setSize(400, 350);
 
+        list.setBounds(0,0,400,350);
+        botton.setBounds(0,350,400,100);
+        back.setBounds(140,350,100,30);
+
+        botton.setBackground(Color.white);
+        back.setBackground(Color.PINK);
+        scrollPane.getViewport().setBackground(Color.WHITE);
+
+        botton.setFont(font);
+
+        botton.add(back);
+        list.add(scrollPane);
+        add(list);
+        add(botton);
+
+        back.addActionListener(this);
         table.addMouseListener(this);
+
+        setVisible(true);
     }
 
     @Override
@@ -69,7 +96,13 @@ public class admin extends JFrame implements MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getActionCommand().equals("로그아웃")){
+            setVisible(false);
+            new homepage();
+        }
+    }
 //    public static void main(String[] args){
 //        new admin();
 //    }
