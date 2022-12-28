@@ -5,9 +5,11 @@ import java.awt.event.ActionListener;
 
 public class change extends JFrame implements ActionListener {
 
-    JTextField text_name;
-    JPasswordField text_pw;
+    JTextField chaname, chapw;
+    JRadioButton F, M;
     JPanel chapanel = new JPanel();
+    String getname, getgender, getpw, getid;
+    LoginDAO dao = new LoginDAO();
     change(String id1, String pw1){
         setTitle("change");
         setSize(400, 450);
@@ -21,20 +23,18 @@ public class change extends JFrame implements ActionListener {
 
         System.out.println("Aaa");
         System.out.println(id1);
+        getid = id1;
 
         JLabel name = new JLabel("이름: ");
         JLabel id = new JLabel("ID: ");
         JLabel pw = new JLabel("Password: ");
         JLabel gender = new JLabel("성별");
         JLabel getid = new JLabel(id1);
-        JTextField chaname = new JTextField();
-        JTextField chapw = new JTextField();
+        chaname = new JTextField();
+        chapw = new JTextField();
 
-        text_name = new JTextField();
-        text_pw = new JPasswordField();
-
-        JRadioButton F = new JRadioButton("여자");
-        JRadioButton M = new JRadioButton("남자");
+        F = new JRadioButton("여자");
+        M = new JRadioButton("남자");
 
         JButton submit = new JButton("수정하기");
 
@@ -60,8 +60,6 @@ public class change extends JFrame implements ActionListener {
         chapanel.add(F);
         chapanel.add(M);
         chapanel.add(submit);
-        chapanel.add(text_name);
-        chapanel.add(text_pw);
         chapanel.add(chaname);
         chapanel.add(chapw);
         chapanel.add(getid);
@@ -75,6 +73,29 @@ public class change extends JFrame implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if(e.getActionCommand().equals("수정하기")){
+            getname = chaname.getText();
+            getpw = chapw.getText();
+            if(F.isSelected())
+                getgender = "F";
+            else
+                getgender = "M";
+            int success = dao.updateLogin(getname, getid, getpw, getgender);
+            System.out.println("abcde");
+            System.out.println(getname);
+            System.out.println(getpw);
+            System.out.println(getgender);
+            System.out.println(getid);
+            if(success == 0)
+                System.out.println("실패");
+            else{
+                System.out.println("성공");
+                JOptionPane.showMessageDialog(null, "수정 완료.");
+                setVisible(false);
+                //success suc = new success();
+            }
+        }
 
     }
 
