@@ -7,13 +7,16 @@ public class success extends JFrame implements ActionListener{
     JPanel logpanel = new JPanel();
     String getname, getid, getpw, getgender;
     LoginDAO dao = new LoginDAO();
-    public success(){
+    public success(String id1, String pw1){
         setTitle("login success");
         setSize(400, 450);
         setLocationRelativeTo(null);
 
         getContentPane().setBackground(Color.white);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        getid = id1;
+        getpw = pw1;
 
         logpanel.setLayout(null);
 
@@ -31,6 +34,7 @@ public class success extends JFrame implements ActionListener{
         logpanel.add(remove);
         logpanel.add(logout);
 
+        change.addActionListener(this);
         remove.addActionListener(this);
         logout.addActionListener(this);
 
@@ -45,6 +49,8 @@ public class success extends JFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "탈퇴되었습니다.");
                 homepage page = new homepage();
                 getid = page.getid;
+                getpw = page.getpw;
+                //System.out.println(getid);
                 dao.deleteLogin(getid);
                 setVisible(false);
             }
@@ -54,12 +60,12 @@ public class success extends JFrame implements ActionListener{
             homepage page = new homepage();
         }
         if(e.getActionCommand().equals("개인정보 수정")){
-
+            setVisible(false);
+            new change(getid, getpw);
         }
     }
 
-
-    public static void main(String[] args){
-        new success();
-    }
+//    public static void main(String[] args){
+//        new success();
+//    }
 }
